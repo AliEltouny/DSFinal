@@ -27,7 +27,7 @@ This is a top-down, single-player kitchen simulation game developed in Unity. Th
 
 ## Requirements
 
-* Unity Editor version `2022.3 LTS` or newer
+* Unity Editor version `6000.0.26f1`
 * Input System, Cinemachine, TextMeshPro, and URP packages installed
 
 ---
