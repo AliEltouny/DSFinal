@@ -41,7 +41,7 @@ This is a top-down, single-player kitchen simulation game developed in Unity. Th
 2. **Open in Unity**
 
    * Open the project using Unity Hub.
-   * Use version `2022.3 LTS` or newer.
+   * Use version `6000.0.26f1` or newer.
 
 3. **Run the Game**
 
