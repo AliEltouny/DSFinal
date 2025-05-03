@@ -178,3 +178,9 @@ Assets/
 * Developed by: Aly Eltony
 * Sound and music assets: Royalty-free assets from public sources
 * UI and visual templates: Unity Asset Store and custom materials
+
+<<<<<<< HEAD
+---
+=======
+---
+>>>>>>> a69b34be9506afa29d95c271ad14499b77fb8f9d
