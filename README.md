@@ -1,7 +1,3 @@
-Thanks for the clarification and for providing your file structure. Based on your project’s contents and your request for a formal tone (no emojis), here's a professional `README.md` suitable for your final year submission:
-
----
-
 # Unity Kitchen Simulation Game
 
 This is a top-down, single-player kitchen simulation game developed in Unity. The player is responsible for preparing, cooking, and delivering food orders under time constraints. The project demonstrates modular gameplay systems, input flexibility, dynamic UI, and real-time state management.
