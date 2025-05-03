@@ -1,0 +1,172 @@
+Game Progress:
+
+Day 1:
+
+1. Added Post Processing (Basically the coloring and over all quality of the game)
+
+2. Added Character Model
+
+3. Added Movement Script firsty I did the inputvector which gets the keys entered by user, I also used both rotateSpeed and moveSpeed and converted Vector3 to Vector2 as we are using x and y movement not x, y and z, and lastly added smooth moving using slerp for our instance (calculates transform.forward(used for 3d games), b (moveDir which is the convertion) and c(Time.deltaTime, which basically converts the movement from frames per second to the time taken for 1 frame  * rotateSpeed) 
+
+- Important: Made Use of private classes as they are only being used for the specific script to add to the inspector use ([SerializeField])
+
+4. Added Charecter Idle Animation 
+
+
+Day 2:
+
+1. Added Player Animator
+
+Brief overview:
+started by making the file (PlayerAnimator)
+I added a reference to the Player class to access its movement state. I used an Animator component to control the player's animations. The key part here is the IS_WALKING parameter, which is a constant string used to trigger the "IsWalking" animation based on whether the player is moving or not. The Update method checks the player’s walking status using player.IsWalking() and updates the Animator's boolean parameter accordingly.
+
+- Important: I used [SerializeField] to expose the Player reference in the Inspector, allowing easy assignment while keeping the variable private for encapsulation.
+
+2. Added Character Walk Animation
+
+3. Added Cinemachine
+
+4. Refactored My code to separate the player class from the input 
+
+5. The PlayerInputAction was re-edited and replaced the movement code into using the new unity input system instead of our own code handling it super easily for multiple inputs such as joystick or controller etc
+
+6. Developing a Player Colision
+a) Adding as a test then later removing Raycasting (shoots from place of origin, direction and distance) removed as ray casting doesn't allow for us to use player size to analyze what directly hits the block rather uses a middle and anything that isn't touching the middle of the character can pass through
+b) used CapsulCast and added a bunch of variables for the character like hight radius and move distance (the amount of distance the player can move forward)
+c) one issue is that if we click w we cant move but if we click w and d we should be able to move diagonally whilst hugging the wall (most games apply this) lets fix it by checking if can move left or right when cant move Infront then it becomes the new implementation of move z movement which will be used as diagonal movement.
+
+Day 3:
+
+1. Adding the Kitchen models and Making a representation Layout
+
+2. Making the collider functions with the kitchen counters to detect certain counters etc (using ray casting as we don't wanna accidently access other counters using our diameters)
+
+then it should be able to detect each object seperatly (using our position and raycasthit which gets us the object being hit and move dir and setting an interact distance)
+
+added a lastInteractDir which basically the players last dir he can interact with it previously he if he stopped moving and looked at the counter he wouldn't interact with object
+
+3. made a clear counter script for all instances of the prefab which we can actually start interacting with the counter using TryGetComponent which uses Generics to get all types of components
+
+4. Created Interact Actions and c# events (used ? instead of if statement basically executes from right to left) basically what i does it instead of walking to interact its click E which I've assigned to interact with the counter i used as an example
+
+5. Created a selectedCounter code basically checks the selected counter ur character is hovering over and highlights it with the selected counter mesh also used singleton pattern as its a single player for now using a get ins and set inst made it a public class with private properties { get; private set; } (in the future i might add a multiplayer so I'd have to change it later onwards).
+
+create selectedcountervisual on start to not get null from awake instance as we want player to run before selectedcountervisual
+
+6. cleaned some of the code snippets reduced repeated functions
+
+Day 4:
+
+1. added the kitchen items (tomato, cheese, lettuce, buns and burger)
+
+2. Making the Kitchen Object SO which will basically be the script for defining any interactables in the game including icons the kitchen items and the stove the trash bin etc
+
+3. making the kitchen object script
+
+4. Kitchen Object Parent which will indicate where the kitchen object can be dropped and picked up and check if it knows its on the counter or not etc
+	(the ability to know where a kitchen object is)
+5. Player Picking the objects up and using c# interfaces to make it so that the player can interact with the object and not just the counter
+
+6. Remove the testing code:
+
+private void Update() {
+        if (testing && Input.GetKeyDown(KeyCode.T)) {
+            if (kitchenObject != null) {
+                kitchenObject.SetKitchenObjectParent(secondClearCounter); 
+            }
+        }
+    }
+
+    [SerializeField] private ClearCounter secondClearCounter;
+    [SerializeField] private bool testing;
+
+7. Made a container counter which basically spawns the items instead of it spawning from the counter out of no where, ill be making this using prefab varients
+
+8. Added Icons for each Kitchen Item then used Inheritance
+
+9. Made a BaseCounter which will basically link all the counters together instead of mono behaviour and getcomponent from it as i replaced both mono behaviours for both counters with the BaseCounter, this makes it so we can add multiple counters easily and be able to insantiate a Kitchen Item when interacted  with. then introduced the use of protected class which basically allows other classes to access when and only when a class extends it, base counter should never be triggered thus added Debug.LogError("BaseCounter.Interact();")
+
+10. then i refactored the code to reduce logic for example i had the IKitchenObjectParent in each counter with its logic instead add it to the basecounter with its logic as theyre connected and removed the fact normal counter adds on interact a kitchenitem then added the Container counter animation 
+
+11. Lastly implementing the basic logic for adding item to counter and picking item from counter, since we have a clean code this part should be easy check if player is holding something else nothing if so then the counter should take the object the player taking object from counter will be made later on as plates will be introduced soon
+
+12. Fix it so that the player cant take more than 1 Item and cant place more than 1 item now
+
+Day 5: Cutting counter, interact alternate
+
+1. updated the player when not looking at counter it rotates to look at it when selecting the counter (basically player when hugging wall with left or right hand cant rotate towards the counter so we need to fix that)
+
+2. created the kitchen object cutting basically added the cutting board when tomato or etc added on there it cuts it into its slices model basically destroys the tomato model and add the sliced on on the board then u can pick it up and place it down and etc
+
+3. added the cutting recipies SO, so when a certain vegi is put on the cutting board it can cut that into its sliced model (it was basically hardcoded to turn into tomato slices at first)
+
+4. fixed code error handling like making sure you can only add cutting recipe input and only cut that whilest not being able to put other food items like bread meat etc and also not being able to cut an output (cheese slices for example) as its alr cut so wont cut again nor give and error.
+
+5. added the cutting progress and its bar (world canvas occupies what ever place it is in the screen (not the whole screen)
+
+6. created the script for the horizontal image filled type for the canvas basically it will move remove % from the image (yellow color) horizontally with every cut of the veggie lets say the tomato i set it to cut after clicking f 3 times so the bar should move 3 times first f it will become 0.66 then 0.33 then 0 and the tomato should be cut etc.
+
+7. function was a bit confusing but apparently we couldn't cut an int by an int (ProgressNormalized = cuttingProgress / cuttingRecipeSO.cuttingProgressMax) which would basically = 0 so i had to convert one of them into a float, then i hid it so when interacted with it then shows instead of being there all the time
+
+8. added the cutting animation too + Canvas bar now looks at the player camera position now for a more refined look whilst also refining the code (used LateUpdate to make the canvas move after the camera has moved for a smoother look)
+
+9. finally for the canvas camera added 4 modes to switch through for bar view one moves with camera one is just basic forward and their inverted for cutting board opposite rotation.
+
+10. added trash bin (deletes hand held objects) and organized the structure of the folders
+
+Day 6:
+
+1. making the meat patty burned/cooked/uncooked scriptable objects then started for the first step into making stove counter, then state machine
+
+2. made the state machine for frying to fried to burned for the meat patty all inside the stove counter code when a player places a meat patty on the stove it goes through them 1 by 1 making sure when object is removed the state is back to idle
+
+3. after some testing i then added the stove particle effect with the animation curve to shrink after being thrown up then down for a nice touch with the red glowing from the day 1 preprocessing
+
+4. added the Ui progress bar element into my stove to show progress of cooking which it takes from the frying/burning Recipe SO
+then basically cleaned the cutting code by changing it to use the IHasProgress which is a new code that i can connect any other counter with to give it the progress bar UI instead of it being only in the cutting now its in both stove and cutting and i can easily add it to others
+
+5. adding the plates system made it max to spawn 4 plates on a diff y vector so that it doesn't overlap etc then implemented a pick up method to be able to pick the plates spawned, made it so that when interacted with obvious checks if player is holding something if not picks up a plate model then deletes one from the ones spawning and holds it as an interactable object.
+
+6. made it so that when each object is placed on the plate they enable their object in the "full plate visual" basically making it visible on the plate, making it like this is better in order to have an organised full plate for that specific meal and just make the ingredient either hidden or there 
+
+7. added icons for the item pick up on plate, so on item pick up add sprite for each corresponding item
+
+Day 7.
+
+1. Plan kitchen design then add counters to match
+
+2. Create the DeliveryCounter function as a test then, Learn more about shader graph to add some visual effect for the delivery counter basically is the essence for learning how to import images and animate them if i wanted to which is making some sort of moving arrow for the delivery counter
+
+3. began the implementation of the delivery manager function made a bunch of recipes for the game burger cheeseburger etc, then made them all into 1 list which will then be part of the delivery managers function of random select one of the recipes to deliver then added a function for find delivered recipe which will check if the platekitchenobject being delivered are a match or not of the displayed random recipe
+
+4. use the world canvas to create a nice delivery UI for the delivery manager now instead of it showing in the console it should show in a nice and cleaned ui with the recipe name next to it is it's icon sprite, then made sure when recipe is submitted if correct recipe destroy ui on click else dont destroy ui.
+
+Day 8.
+
+1. now its time to add detail to the game functions is working now lets start the implementation of sound effects then start and end menu
+
+2. got free template sound effects off the unity store copywrite free for each like: chopping, trash, walking, stove, correct, and wrong orders placing and taking items with multiple for most with random picker for the sound effect being played also added a nice sound track for the game free no copywrite
+
+4. now we will begin making the start and end of the game so when you play there will be a 3 second prompt then a timer for you to submit orders in making the most out of the timer (more orders is essentially the goal here).
+
+5. basically made a phew states WaitingToStart, CountdownToStart, GamePlaying, and GameOver for waiting is basically loading phase gave around 1s then countdown made it 3s added the canvas for it and a custom material for it to not over ride main material for other text canvas then turned the 3f into a 3s countdown using Mathf.Ceil and other made functions then made it in the middle of the screen cant play until count down is over then while playing you can deliver stuff then finally when game is over it should be around 10s from the gamePlaying a custom canvas should appear showing you how many correct orders you delivered and that concludes the start and end part of the game making.
+
+6. started plotting the design of the main menu, then started adding it in a new scene then create a start and quit button 1 will quit app 2 will start the game simple logic (create 3 scenes start screen, Loading phase and the main scene) design the start screen then connect it with 1 button (PLAY), there is also a (QUIT) button which will basically exit the game then on (PLAY) clicked as there is a slight delay in loading it goes to the loading page to load as much as it wants so there doesn't look like there is an awkward pause on click (PLAY) then start the implementation of the pause add a new input action Esc for pause then create the function for pause on Esc main game freezes 0f then shows a pause page canvas which says PUASED and also has a button (MAIN MENU) on click takes you back to the main menu if u click esc again canvas is no longer in display and game becomes 1f back and normal its like a time freeze that's all.
+
+Day 9. 
+
+1. Added a Static that resets any data when main menu clicked in pause menu
+
+2. added an options button in the pause menu which has a soundeffect / music volume changer had to make it so that we can changeVolume by multiplying the one in the parameter by the one we store we will make it so that on click it increases the volume by .1f for each, make sure it updates visual on click so it increments every click by 1, then made sure to save the player prefered music / sound effects settings in the ChangeVolume function so that on play again doesnt go back to defult once more.
+
+3. added the design of the player keybinds in the options then started the implementation of it naming them etc.. also saves when quit game as user pref so you click the one for Move up which is w then you click your preferred button after a canvas pops up and says click a key to rebind which could be Y then that will be the new move up key the button text will update accordingly
+
+Day 10. 
+
+1. Added gamepad controller keybnds and your also able to change them as you wish with a navigation system can be used with both gamepad and arrows keys (button is highlighted in a nice green)
+
+2. polishing the game start by adding more to the map to make it look cleaner add walls and cover the outside, added animations for the new canvas for warning players about burning food added a canvas and animation on delivery failed or success both with trigger param connecting them to the code also w a private animator anim etc added a player particle effect after walk and a player tutorial on load it basically shows a canvas then u must click interact to confirm ready basically like you understand how its played now then you load in.
+
+
+
