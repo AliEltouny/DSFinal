@@ -27,11 +27,7 @@ This is a top-down, single-player kitchen simulation game developed in Unity. Th
 
 ## Requirements
 
-<<<<<<< HEAD
-* Unity Editor version `2022.3 LTS` or newer
-=======
 * Unity Editor version `6000.0.26f1`
->>>>>>> a69b34be9506afa29d95c271ad14499b77fb8f9d
 * Input System, Cinemachine, TextMeshPro, and URP packages installed
 
 ---
@@ -45,11 +41,7 @@ This is a top-down, single-player kitchen simulation game developed in Unity. Th
 2. **Open in Unity**
 
    * Open the project using Unity Hub.
-<<<<<<< HEAD
-   * Use version `2022.3 LTS` or newer.
-=======
-   * Use version `6000.0.26f1` or newer.
->>>>>>> a69b34be9506afa29d95c271ad14499b77fb8f9d
+   * Use version `6000.0.26f1`
 
 3. **Run the Game**
 
@@ -186,9 +178,3 @@ Assets/
 * Developed by: Aly Eltony
 * Sound and music assets: Royalty-free assets from public sources
 * UI and visual templates: Unity Asset Store and custom materials
-
-<<<<<<< HEAD
----
-=======
----
->>>>>>> a69b34be9506afa29d95c271ad14499b77fb8f9d
